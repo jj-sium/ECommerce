@@ -11,6 +11,5 @@ using Microsoft.EntityFrameworkCore;
                 => options.UseSqlite("Data Source=database.db");
 
         public DbSet<Utente> Utenti { get ; set; }
-
-public DbSet<ghinelli.johan._5h.Ecommerce.Models.Auto> Auto { get; set; } = default!;
-    }
+        public DbSet<Auto> Auto { get; set; }
+}

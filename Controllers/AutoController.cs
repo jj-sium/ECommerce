@@ -13,9 +13,9 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
     {
         private readonly dbContext _context;
 
-        public AutoController(dbContext context)
+       public AutoController()
         {
-            _context = context;
+           _context = new dbContext();
         }
 
         // GET: Auto
@@ -43,9 +43,13 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         }
 
         // GET: Auto/Create
-        public IActionResult Cerca()
+        public IActionResult Create()
         {
             return View();
+        }
+         public async Task<IActionResult>  Cerca()
+        {
+            return View(await _context.Auto.ToListAsync());
         }
 
         // POST: Auto/Create
@@ -53,7 +57,7 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cerca([Bind("Id,Modello,Marca,Anno,Cilindrata,Prezzo,Chilometraggio")] Auto auto)
+        public async Task<IActionResult> Create([Bind("Id,Modello,Marca,Anno,Cilindrata,Prezzo,Chilometraggio,Image")] Auto auto)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +89,7 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Modello,Marca,Anno,Cilindrata,Prezzo,Chilometraggio")] Auto auto)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Modello,Marca,Anno,Cilindrata,Prezzo,Chilometraggio,Image")] Auto auto)
         {
             if (id != auto.Id)
             {

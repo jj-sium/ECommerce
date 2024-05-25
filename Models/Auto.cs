@@ -10,4 +10,5 @@ public class Auto
     public string? Prezzo{get;set;}
 
     public string? Chilometraggio{get;set;}
+    public string? Image {get;set;}
 }

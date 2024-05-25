@@ -1,16 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using ghinelli.johan._5h.Ecommerce.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Aggiungi servizi al container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession(); // Aggiungi il supporto per le sessioni
 
-var app = builder.Build();
+// Configura dbContext
+//builder.Services.AddDbContext<dbContext>(options =>
+  //  options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    
     app.UseHsts();
 }
 
@@ -28,3 +33,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+

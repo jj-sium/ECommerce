@@ -7,7 +7,7 @@ public class Auto
     public string? Anno{get;set;}
     public string? Cilindrata{get;set;}
 
-    public string? Prezzo{get;set;}
+    public decimal Prezzo { get; set; }
 
     public string? Chilometraggio{get;set;}
     public string? Image {get;set;}

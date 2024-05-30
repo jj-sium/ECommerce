@@ -23,6 +23,21 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         {
             return View(await _context.Auto.ToListAsync());
         }
+[HttpPost]public IActionResult AddToCart(int id)
+{
+   if (User?.Identity?.IsAuthenticated == false)
+
+    {
+        // Se l'utente non ha effettuato il login, reindirizzalo alla pagina di login
+        return RedirectToAction("Login", "Home");
+    }
+
+    // Logica per aggiungere l'auto al carrello qui
+
+    // Ritorna una vista, reindirizzamento o altro come appropriato
+    return RedirectToAction("Index");
+}
+
 
         // GET: Auto/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -51,6 +66,8 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         {
             return View(await _context.Auto.ToListAsync());
         }
+        [HttpPost]
+
 
         // POST: Auto/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

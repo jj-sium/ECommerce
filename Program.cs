@@ -7,10 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession(); // Aggiungi il supporto per le sessioni
 
-// Configura dbContext
-//builder.Services.AddDbContext<dbContext>(options =>
-  //  options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -21,11 +17,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.UseSession(); // Usa il middleware per le sessioni
 
 app.MapControllerRoute(
@@ -33,4 +26,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-

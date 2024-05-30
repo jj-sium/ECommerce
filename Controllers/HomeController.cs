@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ghinelli.johan._5h.Ecommerce.Helpers;
 
 namespace ghinelli.johan._5h.Ecommerce.Controllers
 {
@@ -14,61 +15,46 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
         // Lista degli utenti registrati (simulazione di archiviazione dei dati)
         private static List<Utente> registeredUsers = new List<Utente>();
         private readonly ILogger<HomeController> _logger;
-
+       
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+          
         }
-
+public IActionResult Privacy(){
+    return View();
+}
         public IActionResult Index()
         {
+            
+          
             return View();
         }
 
-        public IActionResult TabLogin()
-        {
-            string? NomeUtente = HttpContext.Session.GetString("username");
-            if (string.IsNullOrEmpty(NomeUtente))
-                return Redirect("/Home/Index"); // Corretta la redirezione
+    [HttpGet]
+public IActionResult Login()
+{
+    return View();
+}
 
-            dbContext db = new dbContext();
-            return View(db);
-        }
+[HttpPost]
+public IActionResult Login(string username, string password)
+{
+    // Controllo se le credenziali corrispondono a quelle di un utente registrato
+    var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-          [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-         [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            // Controllo se le credenziali corrispondono a quelle di un utente registrato
-            var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
-
-            if (user != null)
-            {
-                // Autenticazione riuscita, reindirizza alla pagina principale
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                // Aggiungi un errore al modello di validazione per visualizzarlo nella vista
-                ModelState.AddModelError(string.Empty, "Credenziali non valide");
-                return View();
-            }
-        }
+    if (user != null)
+    {
+        // Autenticazione riuscita, reindirizza alla pagina principale
+        return RedirectToAction("Index");
+    }
+    else
+    {
+        // Aggiungi un errore al modello di validazione per visualizzarlo nella vista
+        TempData["ErrorMessage"] = "Credenziali non valide";
+        return View();
+    }
+}
         [HttpGet]
         public IActionResult Register()
         {

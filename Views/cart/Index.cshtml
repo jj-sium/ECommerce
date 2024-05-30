@@ -1,0 +1,46 @@
+@model IEnumerable<ghinelli.johan._5h.Ecommerce.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Carrello";
+    var cart = ViewBag.Cart as List<ghinelli.johan._5h.Ecommerce.Models.CartItem>;
+    var total = ViewBag.Total;
+}
+
+<h2>Carrello</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Modello</th>
+            <th>Marca</th>
+            <th>Prezzo</th>
+            <th>Quantità</th>
+            <th>Totale</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (cart != null)
+        {
+            foreach (var item in cart)
+            {
+                <tr>
+                    <td>@item.Auto.Modello</td>
+                    <td>@item.Auto.Marca</td>
+                    <td>@item.Auto.Prezzo</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Auto.Prezzo * item.Quantity)</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-id="@item.AutoId" class="btn btn-danger">Rimuovi</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h3>Totale: @total</h3>
+
+<div>
+    <a asp-action="ViewCart" class="btn btn-primary">Visualizza Carrello</a>
+</div>

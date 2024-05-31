@@ -31,8 +31,12 @@
                     <td>@item.Quantity</td>
                     <td>@(item.Auto.Prezzo * item.Quantity)</td>
                     <td>
-                        <a asp-action="RemoveFromCart" asp-route-id="@item.AutoId" class="btn btn-danger">Rimuovi</a>
-                    </td>
+    <form asp-action="RemoveFromCart" asp-controller="Cart" asp-route-id="@item.AutoId" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit" class="btn btn-danger">Rimuovi</button>
+    </form>
+</td>
+
                 </tr>
             }
         }
@@ -41,6 +45,4 @@
 
 <h3>Totale: @total</h3>
 
-<div>
-    <a asp-action="ViewCart" class="btn btn-primary">Visualizza Carrello</a>
-</div>
+

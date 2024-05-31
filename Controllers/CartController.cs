@@ -49,7 +49,7 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+       [HttpPost]
         public IActionResult RemoveFromCart(int id)
         {
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") ?? new List<CartItem>();
@@ -59,7 +59,9 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
                 cart.Remove(cartItem);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "cart");
         }
     }
+
+    
 }

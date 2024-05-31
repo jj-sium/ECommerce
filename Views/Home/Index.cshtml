@@ -1,5 +1,73 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div class="jumbotron text-center">
+    <h1 class="display-4">Benvenuti in AutoVendita</h1>
+    <p class="lead">La tua destinazione ideale per l'acquisto di auto di qualità.</p>
+    <hr class="my-4">
+    <p>Esplora la nostra vasta gamma di veicoli, dalle auto di lusso alle utilitarie. Troverai sicuramente l'auto che fa per te.</p>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("Cerca", "Auto")" role="button">Cerca Auto</a>
+</div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Offerte Speciali</h2>
+            <p>Scopri le nostre incredibili offerte speciali su una selezione di auto. Sconti imperdibili ti aspettano!</p>
+            
+        </div>
+        <div class="col-md-4">
+            <h2>Auto Nuove Arrivate</h2>
+            <p>Resta aggiornato con le ultime novità. Abbiamo nuovi modelli disponibili ogni settimana.</p>
+           
+        </div>
+        <div class="col-md-4">
+            <h2>Finanziamenti</h2>
+            <p>Offriamo opzioni di finanziamento flessibili per aiutarti ad acquistare l'auto dei tuoi sogni.</p>
+            
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Perché Scegliere AutoVendita?</h2>
+            <ul>
+                <li>Vasta selezione di auto di qualità</li>
+                <li>Prezzi competitivi e offerte speciali</li>
+                <li>Servizio clienti eccellente</li>
+                <li>Opzioni di finanziamento flessibili</li>
+                <li>Assistenza post-vendita garantita</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .jumbotron {
+        background-color: #f8f9fa;
+        padding: 2rem 1rem;
+        margin-bottom: 2rem;
+        border-radius: .3rem;
+    }
+
+    .jumbotron h1 {
+        font-size: 3.5rem;
+    }
+
+    .container {
+        max-width: 960px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>
 

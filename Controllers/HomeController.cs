@@ -36,31 +36,38 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+   [HttpPost]
+public async Task<IActionResult> Login(string username, string password)
+{
+    if (username == "admin" && password == "admin")
+    {
+        // Se l'username e la password sono entrambi "admin", reindirizza alla pagina AutoController
+        return RedirectToAction("Index", "Auto");
+    }
+
+    var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
+
+    if (user != null)
+    {
+        var usernameValue = user?.username ?? string.Empty;
+        var claims = new List<Claim>
         {
-            var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
+            new Claim(ClaimTypes.Name, usernameValue)
+        };
 
-            if (user != null)
-            {
-              var usernameValue = user?.username ?? string.Empty;
-                var claims = new List<Claim>
-                    {
-                       new Claim(ClaimTypes.Name, usernameValue)
-                    };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        return RedirectToAction("Cerca", "Auto");
+    }
+    else
+    {
+        TempData["ErrorMessage"] = "Credenziali non valide";
+        return View();
+    }
+}
 
-                return RedirectToAction("Cerca", "Auto");
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Credenziali non valide";
-                return View();
-            }
-        }
 
        
         [HttpGet]
@@ -85,6 +92,8 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
      [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            HttpContext.Session.Remove("cart");
+            
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }

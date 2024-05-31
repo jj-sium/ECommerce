@@ -1,60 +1,68 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ghinelli.johan._5h.Ecommerce.Models;
-using Microsoft.AspNetCore.Http;
-using System;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using ghinelli.johan._5h.Ecommerce.Helpers;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ghinelli.johan._5h.Ecommerce.Controllers
 {
     public class HomeController : Controller
     {
-        // Lista degli utenti registrati (simulazione di archiviazione dei dati)
         private static List<Utente> registeredUsers = new List<Utente>();
         private readonly ILogger<HomeController> _logger;
-       
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-          
         }
-public IActionResult Privacy(){
-    return View();
-}
+
         public IActionResult Index()
         {
-            
-          
             return View();
         }
 
-    [HttpGet]
-public IActionResult Login()
-{
-    return View();
-}
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-[HttpPost]
-public IActionResult Login(string username, string password)
-{
-    // Controllo se le credenziali corrispondono a quelle di un utente registrato
-    var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-    if (user != null)
-    {
-        // Autenticazione riuscita, reindirizza alla pagina principale
-        return RedirectToAction("Index");
-    }
-    else
-    {
-        // Aggiungi un errore al modello di validazione per visualizzarlo nella vista
-        TempData["ErrorMessage"] = "Credenziali non valide";
-        return View();
-    }
-}
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            var user = registeredUsers.FirstOrDefault(u => u.username == username && u.password == password);
+
+            if (user != null)
+            {
+              var usernameValue = user?.username ?? string.Empty;
+                var claims = new List<Claim>
+                    {
+                       new Claim(ClaimTypes.Name, usernameValue)
+                    };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                return RedirectToAction("Cerca", "Auto");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Credenziali non valide";
+                return View();
+            }
+        }
+
+       
         [HttpGet]
         public IActionResult Register()
         {
@@ -62,20 +70,24 @@ public IActionResult Login(string username, string password)
         }
 
         [HttpPost]
-        public IActionResult Register(string username, string password, string firstName, string lastName, DateTime dob)
+        public IActionResult Register(string username, string password)
         {
-            // Creazione di un nuovo utente con le informazioni fornite
             var newUtente = new Utente
             {
                 username = username,
                 password = password,
             };
 
-            // Aggiunta dell'utente alla lista degli utenti registrati
             registeredUsers.Add(newUtente);
 
-            // Reindirizzamento alla pagina di login dopo la registrazione
             return RedirectToAction("Login");
         }
+     [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
     }
+    
 }

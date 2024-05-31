@@ -18,13 +18,13 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
 
         public IActionResult Index()
         {
-            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") ?? new List<CartItem>(); // Assicura che cart non sia null
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") ?? new List<CartItem>();
             ViewBag.Cart = cart;
             ViewBag.Total = cart.Sum(item => item.Auto.Prezzo * item.Quantity);
-              return View("~/Views/Cart/Index.cshtml");
-          
+            return View("~/Views/Cart/Index.cshtml");
         }
 
+        [HttpPost]
         public IActionResult AddToCart(int id)
         {
             var auto = _context.Auto.SingleOrDefault(a => a.Id == id);
@@ -49,9 +49,10 @@ namespace ghinelli.johan._5h.Ecommerce.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public IActionResult RemoveFromCart(int id)
         {
-            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") ?? new List<CartItem>(); // Assicura che cart non sia null
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") ?? new List<CartItem>();
             var cartItem = cart.SingleOrDefault(c => c.AutoId == id);
             if (cartItem != null)
             {

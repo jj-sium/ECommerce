@@ -6,14 +6,8 @@
 
 <h1>Cerca Auto</h1>
 
-<h4>Auto</h4>
-<hr />
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
-</svg>
 <div class="Auto">
-    @foreach (var item in @Model )
+    @foreach (var item in Model)
     {
         <div class="Auto-item">
             <img src="/img/@item.Image" alt="@item.Marca" class="Auto-item-image"/>
@@ -24,13 +18,25 @@
                 <p>Cilindrata: @item.Cilindrata</p>
                 <p>Prezzo: @item.Prezzo</p>
                 <p>Chilometraggio: @item.Chilometraggio</p>
+                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+    <input type="hidden" name="id" value="@item.Id" />
+  @if (User?.Identity?.IsAuthenticated == true)
+{
+    <button type="submit">Aggiungi al carrello</button>
+}
+else
+{
+    <button type="button" onclick="alert('Devi effettuare l\'accesso per aggiungere al carrello')">Aggiungi al carrello</button>
+}
+
+
+
+</form>
             </div>
         </div>
     }
-    <div>
-        <a asp-action="Index">Torna alla pagina iniziale</a>
-    </div>
 </div>
+
 <style>
     .Auto {
         display: flex;
@@ -38,7 +44,7 @@
     }
     .Auto-item {
         border: 1px solid #ddd;
-         padding: 10px;
+        padding: 10px;
         margin: 10px;
         width: 200px;
         text-align: center;
@@ -51,9 +57,3 @@
         margin-top: 10px;
     }
 </style>
-
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
